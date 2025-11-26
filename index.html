@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ordena las Cartas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio id="bg-music" src="audio/musica.mp3" loop></audio>
+
+    <div id="start-screen" class="overlay">
+        <div class="start-inner">
+            <h1>Ordena las Cartas</h1>
+            <p>
+                El Plan Familiar de Emergencia (PFE) es una herramienta vital para la seguridad. Define <strong>qué hacer antes, durante y después</strong> de un desastre.
+            </p>
+            <p>
+                Arrastra las cartas y colócalas en el orden correcto:
+                <strong>¿Cuál es el orden lógico y secuencial de los 8 pasos para elaborar un Plan Familiar de Gestión del Riesgo?</strong>
+            </p>
+
+            <div id="demo-cards" aria-hidden="true">
+                <img class="demo-card" src="Cartas/CartasPFE-01.png" alt="Carta 1" style="--delay: 0s;">
+                <img class="demo-card" src="Cartas/CartasPFE-04.png" alt="Carta 4" style="--delay: -1s;">
+                <img class="demo-card" src="Cartas/CartasPFE-07.png" alt="Carta 7" style="--delay: -2s;">
+            </div>
+
+            <div class="start-actions">
+                <button id="btn-start">Iniciar Juego</button>
+            </div>
+            <small class="hint">Protegemos vidas</small>
+        </div>
+    </div>
+
+    <main id="game-area" class="hidden" role="main" aria-label="Juego de ordenar cartas">
+        <header class="hud">
+            <div>Tiempo: <span id="timer">300</span>s</div>
+            <div>Puntos: <span id="score">0</span></div>
+            <div><button id="btn-help" class="secondary hidden">Ver Guía</button></div>
+        </header>
+
+        <section id="board" aria-label="Tablero de 8 slots">
+            <div class="slot-container"><span class="slot-number">1</span><div class="slot" data-slot="0"></div></div>
+            <div class="slot-container"><span class="slot-number">2</span><div class="slot" data-slot="1"></div></div>
+            <div class="slot-container"><span class="slot-number">3</span><div class="slot" data-slot="2"></div></div>
+            <div class="slot-container"><span class="slot-number">4</span><div class="slot" data-slot="3"></div></div>
+            <div class="slot-container"><span class="slot-number">5</span><div class="slot" data-slot="4"></div></div>
+            <div class="slot-container"><span class="slot-number">6</span><div class="slot" data-slot="5"></div></div>
+            <div class="slot-container"><span class="slot-number">7</span><div class="slot" data-slot="6"></div></div>
+            <div class="slot-container"><span class="slot-number">8</span><div class="slot" data-slot="7"></div></div>
+        </section>
+
+        <footer class="controls">
+            <button id="btn-check" class="secondary">Validar Orden</button>
+            <button id="btn-restart" class="secondary">Reiniciar</button>
+        </footer>
+    </main>
+
+    <div id="end-screen" class="overlay hidden">
+        <div class="start-inner">
+            <h2 id="result-title">Resultado</h2>
+            <p>Puntuación: <strong id="final-score">0</strong></p>
+            <div class="start-actions">
+                <button id="btn-play-again">Jugar de nuevo</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="solution-guide" class="overlay hidden">
+        <div class="guide-inner">
+            <h2>Guía de Solución y Explicación</h2>
+            <img src="Guia/guia-solucion.png" alt="Guía visual del orden correcto y explicación de cada carta" class="guide-image">
+            <button id="btn-close-guide">Cerrar</button>
+        </div>
+    </div>
+    
+    <div id="image-zoom-overlay" class="overlay hidden">
+        <div class="zoom-inner">
+            <img src="Guia/guia-solucion.png" alt="Guía de solución ampliada" id="zoomed-guide-image">
+            <button id="btn-close-zoom">X</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
