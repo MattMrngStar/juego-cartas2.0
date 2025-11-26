@@ -1,0 +1,272 @@
+:root{
+  --slot-w: 190px;
+  --slot-h: 270px;
+  --gap: 16px;
+  --accent: #2f80ed;
+  --ok: #31b26a;
+}
+
+/* Reset y base */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background: linear-gradient(180deg,#f6f8fb,#eef4ff);
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:18px;
+}
+
+/* Ocultos */
+.hidden{display:none !important}
+
+/* Overlay inicio / fin / guía */
+.overlay{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,0.94);
+  z-index:90;
+  padding:18px;
+}
+.start-inner{
+  width:min(760px,96%);
+  padding:20px;
+  border-radius:12px;
+  background: linear-gradient(180deg,#fff,#fbfdff);
+  box-shadow:0 12px 30px rgba(10,20,40,0.06);
+  text-align:center;
+  min-height: 200px; 
+}
+.start-inner h1{margin:6px 0 8px}
+.start-inner p{color:#374151; margin:0 0 12px}
+.hint{color:#6b7280; margin-top:10px}
+
+/* Demo cards en inicio (ESTRUCTURA SIMPLIFICADA DE SALTO) */
+#demo-cards{
+  display:flex; 
+  gap:14px; 
+  justify-content:center; 
+  margin:12px 0;
+}
+
+.demo-card{ 
+  width:82px; 
+  height:120px; 
+  object-fit:cover; 
+  border-radius:8px;
+  /* SOLO MANTENEMOS LA ANIMACIÓN DE SALTO (FLOAT) */
+  animation: float 4s ease-in-out infinite var(--delay);
+}
+
+/* Animación de flotar (float) */
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
+  100%{transform:translateY(0)}
+}
+
+
+/* HUD */
+#game-area{ width:min(980px,98%); display:flex; flex-direction:column; align-items:center }
+.hud{ width:100%; display:flex; justify-content:space-evenly; align-items:center; gap:12px; font-weight:700; margin-bottom:12px }
+.hud button{ padding: 6px 10px; font-size: 0.9em; }
+
+
+/* BOARD (grid de slot-containers) */
+#board{
+  width:100%;
+  /* 4 COLUMNAS PARA ACOMODAR LAS 8 CARTAS EN 2 FILAS */
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:var(--gap);
+  padding:12px;
+  background:linear-gradient(180deg,#fff,#f7fbff);
+  border-radius:12px;
+  box-shadow:0 10px 26px rgba(12,30,70,0.04);
+  justify-items:center;
+}
+
+/* slot-container (numero + slot) */
+.slot-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  width:100%;
+  max-width: var(--slot-w);
+}
+.slot-number{
+  font-size:16px;
+  font-weight:700;
+  color:#374151;
+  background:#f3f4f6;
+  padding:4px 8px;
+  border-radius:8px;
+  user-select:none;
+}
+
+/* slot fijo */
+.slot{
+  width:100%;
+  aspect-ratio: calc(var(--slot-w) / var(--slot-h));
+  border-radius:10px;
+  border: 3px dashed #c7cfdb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  overflow:hidden;
+}
+.slot.over{ border-color:var(--ok); transform:translateY(-6px); box-shadow:0 14px 36px rgba(49,178,106,0.06) }
+
+/* carta (img) dentro del slot */
+.card{
+  width:98%;
+  height:98%;
+  object-fit:cover;
+  border-radius:8px;
+  user-select:none;
+  touch-action:none;
+  transition: transform .12s ease;
+  display:block;
+}
+.card:active{ cursor:grabbing }
+.card.dragging{ transform: scale(1.04); }
+
+/* clon que sigue al puntero */
+.dragging-clone{
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  border-radius:8px;
+  box-shadow: 0 18px 46px rgba(10,20,40,0.28);
+}
+
+/* Controles */
+.controls{ margin-top:14px; display:flex; gap:10px; justify-content:center }
+button{ padding:10px 14px; border-radius:10px; border:none; background:var(--accent); color:#fff; font-weight:700; cursor:pointer }
+button.secondary{ background:#6b7280 }
+
+/* --- GUÍA DE SOLUCIÓN (AJUSTES FORZADOS Y TAMAÑO FIJO) --- */
+#solution-guide{
+  z-index: 99999; /* Z-index máximo */
+}
+
+/* Selector más específico: asegura el ancho y la posición relativa */
+#solution-guide .guide-inner{
+  /* ANCHO FORZADO */
+  width: 95vw !important;
+  max-width: 950px !important;
+  
+  max-height: 90vh;
+  padding: 24px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(10,20,40,0.12);
+  text-align: center;
+  overflow-y: auto;
+  
+  position: relative; 
+  padding-bottom: 70px; 
+}
+
+/* Ajustes a la imagen dentro del modal */
+#solution-guide .guide-image{
+  width: 100% !important; 
+  max-width: 100% !important;
+  height: auto;
+  
+  object-fit: contain; 
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin: 0 auto 20px auto; 
+  cursor: zoom-in; /* Indica que al hacer clic se puede hacer zoom */
+}
+
+/* Botón de cierre de la guía */
+#btn-close-guide{
+  position: absolute; 
+  bottom: 20px; 
+  left: 50%;
+  transform: translateX(-50%); 
+  padding: 10px 20px;
+  background: #dc3545; 
+  z-index: 1000; 
+}
+
+
+/* --- ESTILOS PARA EL MODAL DE ZOOM DE IMAGEN --- */
+#image-zoom-overlay {
+  z-index: 999999; /* ¡Aún más alto para asegurar que esté sobre la guía! */
+}
+
+.zoom-inner {
+  width: 95vw; 
+  height: 95vh; 
+  max-width: 1200px; 
+  max-height: 900px; 
+  background: rgba(0,0,0,0.85); /* Fondo oscuro para el zoom */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  padding: 10px; 
+}
+
+#zoomed-guide-image {
+  max-width: 100%; 
+  max-height: 100%; 
+  object-fit: contain; 
+  border-radius: 8px;
+  cursor: zoom-out; 
+}
+
+#btn-close-zoom {
+  position: absolute;
+  top: -15px; 
+  right: -15px;
+  background: #dc3545; 
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  z-index: 1001; 
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #btn-close-zoom {
+    top: 5px; 
+    right: 5px;
+  }
+}
+
+/* Responsive */
+@media (max-width:900px){
+  #board{ grid-template-columns: repeat(4, 1fr); }
+  .slot-container{ max-width:100px }
+}
+@media (max-width:520px){
+  #board{ grid-template-columns: repeat(2, 1fr); gap:10px; }
+  .slot-container{ max-width:90px }
+  /* Ajuste el tamaño de la carta demo en móvil */
+  .demo-card{ width:60px; height:88px } 
+}
